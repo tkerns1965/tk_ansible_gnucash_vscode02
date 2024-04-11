@@ -11,23 +11,18 @@ gnucash_build_packages:
   - libxslt1-dev
   - libwebkit2gtk-4.0-dev
   - gettext
-  - guile-2.2-dev
-  - xsltproc
-  - libpython3-dev
-  - libsecret-1-dev
-  - libboost-dev
-  - libboost-date-time-dev
-  - libboost-filesystem-dev
-  - libboost-locale-dev
-  - libboost-regex-dev
-  - libboost-system-dev
-  - libgtest-dev
-  - google-mock
-  - libxml2-utils
   - swig
-  - python3-pip
-  - python3-setuptools
-  - python3-wheel
+  - guile-3.0-dev
+  - libgwenhywfar-core-dev
+  - libaqbanking-dev
+  - libgwengui-gtk3-dev
+  - libofx-dev
+  - xsltproc
+  - libsecret-1-dev
+  - libdbi-dev
+  - libdbd-mysql
+  - libboost-all-dev
+  - libgtest-dev
 
 gnucash_fldr: /gnucash-5.6
 
