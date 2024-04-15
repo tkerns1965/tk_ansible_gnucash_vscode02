@@ -31,39 +31,39 @@
         extra_opts: [--strip-components=1]
         creates: "{{ gnucash_fldr }}/SOURCE/gnucash/"
 
-    - name: Modify ../CMakeLists.txt
-      vars:
-        file_path: "{{ gnucash_fldr }}/SOURCE/CMakeLists.txt"
-      block:
-        - name: Modify ../CMakeLists.txt -- insert block 1
-          blockinfile:
-            path: "{{ file_path }}"
-            insertafter: 'option \(ALLOW_OLD_GETTEXT "allow to configure build with a gettext version older than 0.19.6. Some files will not be translated!" OFF\)'
-            marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
-            block: |
-              option (FORCE_SWIG "Force swig wrappers generation." OFF)
-        - name: Modify ../CMakeLists.txt -- insert block 2
-          blockinfile:
-            path: "{{ file_path }}"
-            insertafter: '# By default they will only be generated when building from a git worktree'
-            marker: "## {mark} ANSIBLE MANAGED BLOCK 2 ##"
-            block: |
-              if (FORCE_SWIG)
-                set(GENERATE_SWIG_WRAPPERS "YES")
-              else()
-        - name: Modify ../CMakeLists.txt -- indent next line
-          lineinfile:
-            path: "{{ file_path }}"
-            regexp: '^(set\(GENERATE_SWIG_WRAPPERS \${BUILDING_FROM_VCS} CACHE BOOL "Controls whether to generate the swig wrappers for guile and python. If not set the wrappers will only be generated when building from a git worktree"\).*)$'
-            line: '  \1'
-            backrefs: yes
-        - name: Modify ../CMakeLists.txt -- insert block 3
-          blockinfile:
-            path: "{{ file_path }}"
-            insertafter: 'set\(GENERATE_SWIG_WRAPPERS \${BUILDING_FROM_VCS} CACHE BOOL "Controls whether to generate the swig wrappers for guile and python. If not set the wrappers will only be generated when building from a git worktree"\)'
-            marker: "## {mark} ANSIBLE MANAGED BLOCK 3 ##"
-            block: |
-              endif()
+    # - name: Modify ../CMakeLists.txt
+    #   vars:
+    #     file_path: "{{ gnucash_fldr }}/SOURCE/CMakeLists.txt"
+    #   block:
+    #     - name: Modify ../CMakeLists.txt -- insert block 1
+    #       blockinfile:
+    #         path: "{{ file_path }}"
+    #         insertafter: 'option \(ALLOW_OLD_GETTEXT "allow to configure build with a gettext version older than 0.19.6. Some files will not be translated!" OFF\)'
+    #         marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
+    #         block: |
+    #           option (FORCE_SWIG "Force swig wrappers generation." OFF)
+    #     - name: Modify ../CMakeLists.txt -- insert block 2
+    #       blockinfile:
+    #         path: "{{ file_path }}"
+    #         insertafter: '# By default they will only be generated when building from a git worktree'
+    #         marker: "## {mark} ANSIBLE MANAGED BLOCK 2 ##"
+    #         block: |
+    #           if (FORCE_SWIG)
+    #             set(GENERATE_SWIG_WRAPPERS "YES")
+    #           else()
+    #     - name: Modify ../CMakeLists.txt -- indent next line
+    #       lineinfile:
+    #         path: "{{ file_path }}"
+    #         regexp: '^(set\(GENERATE_SWIG_WRAPPERS \${BUILDING_FROM_VCS} CACHE BOOL "Controls whether to generate the swig wrappers for guile and python. If not set the wrappers will only be generated when building from a git worktree"\).*)$'
+    #         line: '  \1'
+    #         backrefs: yes
+    #     - name: Modify ../CMakeLists.txt -- insert block 3
+    #       blockinfile:
+    #         path: "{{ file_path }}"
+    #         insertafter: 'set\(GENERATE_SWIG_WRAPPERS \${BUILDING_FROM_VCS} CACHE BOOL "Controls whether to generate the swig wrappers for guile and python. If not set the wrappers will only be generated when building from a git worktree"\)'
+    #         marker: "## {mark} ANSIBLE MANAGED BLOCK 3 ##"
+    #         block: |
+    #           endif()
     - name: Modify ../libgnucash/engine/gnc-budget.c
       vars:
         file_path: "{{ gnucash_fldr }}/SOURCE/libgnucash/engine/gnc-budget.c"
