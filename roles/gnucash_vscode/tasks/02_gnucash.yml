@@ -64,11 +64,11 @@
     #         marker: "## {mark} ANSIBLE MANAGED BLOCK 3 ##"
     #         block: |
     #           endif()
-    - name: Modify ../libgnucash/engine/gnc-budget.c
+    - name: Modify ../libgnucash/engine/gnc-budget.cpp
       vars:
-        file_path: "{{ gnucash_fldr }}/SOURCE/libgnucash/engine/gnc-budget.c"
+        file_path: "{{ gnucash_fldr }}/SOURCE/libgnucash/engine/gnc-budget.cpp"
       block:
-        - name: Modify ../libgnucash/engine/gnc-budget.c -- insert block 1
+        - name: Modify ../libgnucash/engine/gnc-budget.cpp -- insert block 1
           blockinfile:
             path: "{{ file_path }}"
             insertbefore: 'static void just_get_one\(QofInstance \*ent, gpointer data\)'
@@ -149,13 +149,13 @@
             marker: "/* {mark} ANSIBLE MANAGED BLOCK 1 */"
             block: |
               #include "gnc-budget.h"
-        - name: Modify ../bindings/python/gnucash_core.i -- insert block 2
-          blockinfile:
-            path: "{{ file_path }}"
-            insertafter: '%include <Account.h>'
-            marker: "/* {mark} ANSIBLE MANAGED BLOCK 2 */"
-            block: |
-              %include <gnc-budget.h>
+        # - name: Modify ../bindings/python/gnucash_core.i -- insert block 2
+        #   blockinfile:
+        #     path: "{{ file_path }}"
+        #     insertafter: '%include <Account.h>'
+        #     marker: "/* {mark} ANSIBLE MANAGED BLOCK 2 */"
+        #     block: |
+        #       %include <gnc-budget.h>
     - name: Modify ../bindings/python/gnucash_core.py
       vars:
         file_path: "{{ gnucash_fldr }}/SOURCE/bindings/python/gnucash_core.py"
