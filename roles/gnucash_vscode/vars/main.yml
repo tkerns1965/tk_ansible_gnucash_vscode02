@@ -3,7 +3,7 @@ smb_packages:
   - cifs-utils
 
 gnucash_build_packages:
-  # - build-essential
+  - build-essential
   # - cmake
   # - pkg-config
   - libglib2.0-dev
