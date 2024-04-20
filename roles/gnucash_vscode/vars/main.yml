@@ -4,7 +4,7 @@ smb_packages:
 
 gnucash_build_packages:
   - build-essential
-  # - cmake
+  - cmake
   # - pkg-config
   - libglib2.0-dev
   - libxml2-dev
