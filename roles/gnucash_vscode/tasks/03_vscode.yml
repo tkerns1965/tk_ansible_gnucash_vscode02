@@ -8,18 +8,31 @@
         state: latest
         update_cache: yes
 
-    - name: Prepare to download vscode
-      shell: "{{ item.command }}"
-      args:
-        warn: no
+    # - name: Prepare to download vscode
+    #   shell: "{{ item.command }}"
+    #   args:
+    #     warn: no
+    #     creates: "{{ item.creates }}"
+    #   with_items:
+    #     - { command: 'curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg',
+    #         creates: 'microsoft.gpg' }
+    #     - { command: 'install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg',
+    #         creates: '/usr/share/keyrings/microsoft-archive-keyring.gpg' }
+    #     - { command: 'echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list',
+    #         creates: '/etc/apt/sources.list.d/vscode.list' }
+
+    - name: Prepare to install vscode
+      ansible.builtin.command:
+        name: "{{ item.name }}"
+        state: latest
         creates: "{{ item.creates }}"
-      with_items:
-        - { command: 'curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg',
-            creates: 'microsoft.gpg' }
-        - { command: 'install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg',
-            creates: '/usr/share/keyrings/microsoft-archive-keyring.gpg' }
-        - { command: 'echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list',
-            creates: '/etc/apt/sources.list.d/vscode.list' }
+      loop:
+        - { name: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg,
+            creates: microsoft.gpg }
+        # - { name: install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg,
+        #     creates: /usr/share/keyrings/microsoft-archive-keyring.gpg }
+        # - { name: echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list,
+        #     creates: /etc/apt/sources.list.d/vscode.list }
 
     - name: Install vscode packages
       apt:
