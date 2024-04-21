@@ -24,7 +24,7 @@
     - name: Prepare to install vscode
       ansible.builtin.command:
         cmd: "{{ item.cmd }}"
-        state: latest
+        # state: latest
         creates: "{{ item.creates }}"
       loop:
         - { cmd: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg,
