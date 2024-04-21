@@ -23,15 +23,15 @@
 
     - name: Prepare to install vscode
       ansible.builtin.command:
-        name: "{{ item.name }}"
+        cmd: "{{ item.cmd }}"
         state: latest
         creates: "{{ item.creates }}"
       loop:
-        - { name: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg,
+        - { cmd: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg,
             creates: microsoft.gpg }
-        # - { name: install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg,
+        # - { cmd: install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg,
         #     creates: /usr/share/keyrings/microsoft-archive-keyring.gpg }
-        # - { name: echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list,
+        # - { cmd: echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list,
         #     creates: /etc/apt/sources.list.d/vscode.list }
 
     - name: Install vscode packages
