@@ -8,6 +8,10 @@
         dest: ./code_1.88.1-1712771838_amd64.deb
         checksum: sha256:5e5716de6bf700f3a47bf344009328974da1d331a7b1260d884643eb808a4453
 
+    - name: Install vscode
+      ansible.builtin.apt:
+        deb: ./code_1.88.1-1712771838_amd64.deb
+
     # - name: Prepare to install vscode
     #   ansible.builtin.command:
     #     cmd: "{{ item.cmd }}"
