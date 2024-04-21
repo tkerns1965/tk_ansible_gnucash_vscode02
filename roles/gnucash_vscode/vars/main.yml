@@ -27,7 +27,7 @@ gnucash_build_packages:
 gnucash_fldr: /gnucash-5.6
 
 vscode_packages:
-  - code
+  # - code
   # - code-insiders
   - python3-pip
 
