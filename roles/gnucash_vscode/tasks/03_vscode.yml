@@ -11,6 +11,7 @@
 - name: Install vscode
   ansible.builtin.apt:
     deb: ./code_1.88.1-1712770538_arm64.deb
+    become: true
 
     # - name: Prepare to install vscode
     #   ansible.builtin.command:
