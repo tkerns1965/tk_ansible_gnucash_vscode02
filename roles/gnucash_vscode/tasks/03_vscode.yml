@@ -8,79 +8,71 @@
         state: latest
         update_cache: yes
 
-    # - name: Prepare to download vscode
-    #   shell: "{{ item.command }}"
-    #   args:
-    #     warn: no
+    - name: Download vscode
+      ansible.builtin.get_url:
+        url: https://vscode.download.prss.microsoft.com/dbazure/download/stable/e170252f762678dec6ca2cc69aba1570769a5d39/code_1.88.1-1712771838_amd64.deb
+        dest: code_1.88.1-1712771838_amd64.deb
+
+    # - name: Prepare to install vscode
+    #   ansible.builtin.command:
+    #     cmd: "{{ item.cmd }}"
+    #     # state: latest
     #     creates: "{{ item.creates }}"
-    #   with_items:
-    #     - { command: 'curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg',
-    #         creates: 'microsoft.gpg' }
-    #     - { command: 'install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg',
-    #         creates: '/usr/share/keyrings/microsoft-archive-keyring.gpg' }
-    #     - { command: 'echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list',
-    #         creates: '/etc/apt/sources.list.d/vscode.list' }
+    #   loop:
+    #     - { cmd: wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/e170252f762678dec6ca2cc69aba1570769a5d39/code_1.88.1-1712771838_amd64.deb,
+    #         creates: code_1.88.1-1712771838_amd64.deb }
+    #     # - { cmd: install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg,
+    #     #     creates: /usr/share/keyrings/microsoft-archive-keyring.gpg }
+    #     # - { cmd: echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list,
+    #     #     creates: /etc/apt/sources.list.d/vscode.list }
 
-    - name: Prepare to install vscode
-      ansible.builtin.command:
-        cmd: "{{ item.cmd }}"
-        # state: latest
-        creates: "{{ item.creates }}"
-      loop:
-        - { cmd: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg,
-            creates: microsoft.gpg }
-        # - { cmd: install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg,
-        #     creates: /usr/share/keyrings/microsoft-archive-keyring.gpg }
-        # - { cmd: echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list,
-        #     creates: /etc/apt/sources.list.d/vscode.list }
+#     - name: Install vscode packages
+#       apt:
+#         name: "{{ vscode_packages }}"
+#         state: latest
+#         update_cache: yes
 
-    - name: Install vscode packages
-      apt:
-        name: "{{ vscode_packages }}"
-        state: latest
-        update_cache: yes
+#     - name: Make vscode files directory
+#       file:
+#         path: /usr/share/code
+#         state: directory
+#         mode: 0755
 
-    - name: Make vscode files directory
-      file:
-        path: /usr/share/code
-        state: directory
-        mode: 0755
+#     - name: Copy files for vscode
+#       copy:
+#         src: "{{ item }}"
+#         dest: /usr/share/code/
+#         force: no
+#       with_items:
+#         - /usr/lib/x86_64-linux-gnu/libxcb.so.1
+#         - /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
 
-    - name: Copy files for vscode
-      copy:
-        src: "{{ item }}"
-        dest: /usr/share/code/
-        force: no
-      with_items:
-        - /usr/lib/x86_64-linux-gnu/libxcb.so.1
-        - /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+#     - name: Edit files for vscode
+#       lineinfile:
+#         path: "{{ item }}"
+#         regexp: '^(?P<a>.*)BIG-REQUESTS(?P<b>.*)$'
+#         line: '\g<a>_IG-REQUESTS\g<b>'
+#         backrefs: yes
+#       with_items:
+#         - /usr/share/code/libxcb.so.1
+#         - /usr/share/code/libxcb.so.1.1.0
 
-    - name: Edit files for vscode
-      lineinfile:
-        path: "{{ item }}"
-        regexp: '^(?P<a>.*)BIG-REQUESTS(?P<b>.*)$'
-        line: '\g<a>_IG-REQUESTS\g<b>'
-        backrefs: yes
-      with_items:
-        - /usr/share/code/libxcb.so.1
-        - /usr/share/code/libxcb.so.1.1.0
+# - name: List extensions for vscode
+#   command: "code --list-extensions"
+#   register: vscode_ext_list
+#   changed_when: false
 
-- name: List extensions for vscode
-  command: "code --list-extensions"
-  register: vscode_ext_list
-  changed_when: false
+# - name: Install extensions for vscode
+#   command: "code --install-extension {{ item }}"
+#   with_items: "{{ vscode_extensions }}"
+#   when: item not in vscode_ext_list.stdout_lines
 
-- name: Install extensions for vscode
-  command: "code --install-extension {{ item }}"
-  with_items: "{{ vscode_extensions }}"
-  when: item not in vscode_ext_list.stdout_lines
+# - name: List python packages
+#   command: "python3 -m pip list --user --format columns"
+#   register: python3_pip_list
+#   changed_when: false
 
-- name: List python packages
-  command: "python3 -m pip list --user --format columns"
-  register: python3_pip_list
-  changed_when: false
-
-- name: Install python packages for vscode
-  command: "python3 -m pip install -U {{ item }} --user"
-  with_items: "{{ vscode_python_packages }}"
-  when: item not in python3_pip_list.stdout
+# - name: Install python packages for vscode
+#   command: "python3 -m pip install -U {{ item }} --user"
+#   with_items: "{{ vscode_python_packages }}"
+#   when: item not in python3_pip_list.stdout
