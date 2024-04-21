@@ -4,13 +4,13 @@
 #   block:
 - name: Download vscode
   ansible.builtin.get_url:
-    url: https://vscode.download.prss.microsoft.com/dbazure/download/stable/e170252f762678dec6ca2cc69aba1570769a5d39/code_1.88.1-1712771838_amd64.deb
-    dest: ./code_1.88.1-1712771838_amd64.deb
-    checksum: sha256:5e5716de6bf700f3a47bf344009328974da1d331a7b1260d884643eb808a4453
+    url: https://vscode.download.prss.microsoft.com/dbazure/download/stable/e170252f762678dec6ca2cc69aba1570769a5d39/code_1.88.1-1712770538_arm64.deb
+    dest: ./code_1.88.1-1712770538_arm64.deb
+    checksum: sha256:106ec2d0a5e7309f0a82e57133cf58b49b3e5b2fce8deff7169013abdabbd6ed
 
 - name: Install vscode
   ansible.builtin.apt:
-    deb: ./code_1.88.1-1712771838_amd64.deb
+    deb: ./code_1.88.1-1712770538_arm64.deb
 
     # - name: Prepare to install vscode
     #   ansible.builtin.command:
