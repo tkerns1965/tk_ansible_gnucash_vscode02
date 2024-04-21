@@ -12,6 +12,12 @@
       ansible.builtin.apt:
         deb: ./code_1.88.1-1712770538_arm64.deb
 
+    - name: Install vscode packages
+      apt:
+        name: "{{ vscode_packages }}"
+        state: latest
+        update_cache: yes
+
 #     - name: Make vscode files directory
 #       file:
 #         path: /usr/share/code
