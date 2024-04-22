@@ -36,4 +36,4 @@ vscode_extensions:
 
 vscode_python_packages:
   - fpdf
-  - pylint
+  # - pylint
