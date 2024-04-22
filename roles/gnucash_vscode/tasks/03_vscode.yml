@@ -13,9 +13,8 @@
         deb: ./code_1.88.1-1712770538_arm64.deb
 
     - name: Install vscode packages
-      apt:
+      ansible.builtin.apt:
         name: "{{ vscode_packages }}"
-        state: latest
         update_cache: yes
 
 #     - name: Make vscode files directory
@@ -44,21 +43,21 @@
 #         - /usr/share/code/libxcb.so.1.1.0
 
 - name: List extensions for vscode
-  command: "code --list-extensions"
+  ansible.builtin.command: "code --list-extensions"
   register: vscode_ext_list
   changed_when: false
 
 - name: Install extensions for vscode
-  command: "code --install-extension {{ item }}"
+  ansible.builtin.command: "code --install-extension {{ item }}"
   with_items: "{{ vscode_extensions }}"
   when: item not in vscode_ext_list.stdout_lines
 
 - name: List python packages
-  command: "python3 -m pip list --user --format columns"
+  ansible.builtin.command: "python3 -m pip list --user --format columns"
   register: python3_pip_list
   changed_when: false
 
 - name: Install python packages for vscode
-  command: "python3 -m pip install -U {{ item }} --user"
+  ansible.builtin.command: "python3 -m pip install -U {{ item }} --user"
   with_items: "{{ vscode_python_packages }}"
   when: item not in python3_pip_list.stdout

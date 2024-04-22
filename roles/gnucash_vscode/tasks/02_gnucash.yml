@@ -3,14 +3,14 @@
   become: yes
   block:
     - name: Install packages to build gnucash
-      apt:
+      ansible.builtin.apt:
         name: "{{ gnucash_build_packages }}"
         state: latest
         update_cache: yes
         install_recommends: no
 
     - name: Make gnucash subfolders
-      file:
+      ansible.builtin.file:
         path: "{{ gnucash_fldr }}{{ item }}"
         state: directory
         mode: 0755
@@ -208,7 +208,7 @@
               
               GncBudget.name = property( GncBudget.get_name, GncBudget.set_name )
     - name: Prepare to build gnucash
-      command: |
+      ansible.builtin.command: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_GNUCASH=ON -DWITH_PYTHON=ON -DFORCE_SWIG=ON
           -DWITH_AQBANKING=OFF -DWITH_OFX=OFF -DWITH_SQL=OFF {{ gnucash_fldr }}/SOURCE/
       args:

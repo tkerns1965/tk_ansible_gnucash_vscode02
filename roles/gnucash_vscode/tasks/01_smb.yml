@@ -9,13 +9,13 @@
   become: yes
   block:
     - name: Install smb packages
-      apt:
+      ansible.builtin.apt:
         name: "{{ smb_packages }}"
         state: latest
         update_cache: yes
 
     - name: Make smb mount directory
-      file:
+      ansible.builtin.file:
         path: "{{ smbmount_where }}"
         state: directory
         mode: 0755
@@ -28,7 +28,7 @@
       register: create_smb_mount
 
     - name: Publish / enable / start smb mount
-      command: "{{ item }}"
+      ansible.builtin.command: "{{ item }}"
       with_items:
         - "systemctl daemon-reload"
         - "systemctl enable {{ smbmount_name }}.mount"
