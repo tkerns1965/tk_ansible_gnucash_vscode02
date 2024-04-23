@@ -5,7 +5,6 @@ smb_packages:
 gnucash_build_packages:
   - build-essential
   - cmake
-  # - pkg-config
   - libglib2.0-dev
   - libxml2-dev
   - libxslt1-dev
@@ -14,7 +13,6 @@ gnucash_build_packages:
   - swig
   - guile-3.0-dev
   - libgwenhywfar-core-dev
-  # - libaqbanking-dev
   - libgwengui-gtk3-dev
   - libofx-dev
   - xsltproc
@@ -27,9 +25,8 @@ gnucash_build_packages:
 gnucash_fldr: /gnucash-5.6
 
 vscode_packages:
-  # - code
-  # - code-insiders
   - python3-pip
+  - python3-virtualenv
 
 vscode_extensions:
   - ms-python.python
