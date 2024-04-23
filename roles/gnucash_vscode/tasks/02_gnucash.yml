@@ -19,12 +19,12 @@
         - /BUILD
 
     - name: Download gnucash source
-      get_url: 
+      ansible.builtin.get_url: 
         url: https://github.com/Gnucash/gnucash/releases/download/5.6/gnucash-5.6.tar.bz2
         dest: "{{ gnucash_fldr }}/"
 
     - name: Extract gnucash source
-      unarchive: 
+      ansible.builtin.unarchive: 
         src: "{{ gnucash_fldr }}/gnucash-5.6.tar.bz2"
         dest: "{{ gnucash_fldr }}/SOURCE/"
         remote_src: yes
@@ -69,7 +69,7 @@
         file_path: "{{ gnucash_fldr }}/SOURCE/libgnucash/engine/gnc-budget.cpp"
       block:
         - name: Modify ../libgnucash/engine/gnc-budget.cpp -- insert block 1
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertbefore: 'static void just_get_one\(QofInstance \*ent, gpointer data\)'
             marker: "/* {mark} ANSIBLE MANAGED BLOCK 1 */"
@@ -113,14 +113,14 @@
         file_path: "{{ gnucash_fldr }}/SOURCE/libgnucash/engine/gnc-budget.h"
       block:
         - name: Modify ../libgnucash/engine/gnc-budget.h -- insert block 1
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: 'GncBudget\* gnc_budget_get_default\(QofBook \*book\);'
             marker: "/* {mark} ANSIBLE MANAGED BLOCK 1 */"
             block: |
               #define gnc_book_get_default_budget(b) gnc_budget_get_default((b))
         - name: Modify ../libgnucash/engine/gnc-budget.h -- insert block 2
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: '#define  gnc_budget_lookup_direct\(g,b\) gnc_budget_lookup\(&\(g\),\(b\)\)'
             marker: "/* {mark} ANSIBLE MANAGED BLOCK 2 */"
@@ -132,7 +132,7 @@
         file_path: "{{ gnucash_fldr }}/SOURCE/bindings/python/CMakeLists.txt"
       block:
         - name: Modify ../bindings/python/CMakeLists.txt -- insert block 1
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: '    \${CMAKE_SOURCE_DIR}/libgnucash/engine/Account.h'
             marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
@@ -143,7 +143,7 @@
         file_path: "{{ gnucash_fldr }}/SOURCE/bindings/python/gnucash_core.i"
       block:
         - name: Modify ../bindings/python/gnucash_core.i -- insert block 1
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: '#include "Account.h"'
             marker: "/* {mark} ANSIBLE MANAGED BLOCK 1 */"
@@ -161,14 +161,14 @@
         file_path: "{{ gnucash_fldr }}/SOURCE/bindings/python/gnucash_core.py"
       block:
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 1
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: "    _new_instance = 'xaccMallocAccount'"
             marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
             block: |
               class GncBudget(GnuCashCoreClass): pass
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 2
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: "Book.add_method\\('qof_book_increment_and_format_counter', 'increment_and_format_counter'\\)"
             marker: "## {mark} ANSIBLE MANAGED BLOCK 2 ##"
@@ -177,7 +177,7 @@
               Book.add_method('gnc_book_lookup_budget_by_guid', 'lookup_budget_by_guid')
               Book.add_method('gnc_book_lookup_budget_by_name', 'lookup_budget_by_name')
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 3
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: "    Book.get_price_db, GncPriceDB\\)"
             marker: "## {mark} ANSIBLE MANAGED BLOCK 3 ##"
@@ -190,7 +190,7 @@
               Book.lookup_budget_by_name = method_function_returns_instance(
                   Book.lookup_budget_by_name, GncBudget)
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 4
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: "{{ file_path }}"
             insertafter: "Account.name = property\\( Account.GetName, Account.SetName \\)"
             marker: "## {mark} ANSIBLE MANAGED BLOCK 4 ##"
@@ -215,22 +215,22 @@
         chdir: "{{ gnucash_fldr }}/BUILD"
 
     - name: Make gnucash
-      make:
+      community.general.make:
         chdir: "{{ gnucash_fldr }}/BUILD"
 
     - name: Install gnucash
-      make:
+      community.general.make:
         chdir: "{{ gnucash_fldr }}/BUILD"
         target: install
 
     - name: Create /usr/local/lib/python3/dist-packages/gnucash/gnucash_filedir.py
-      template:
+      ansible.builtin.template:
         src: gnucash_filedir.py
         dest: /usr/local/lib/python3/dist-packages/gnucash/
         mode: 0644
 
 - name: Modify .bashrc
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: ~/.bashrc
     insertafter: EOF
     marker: ""
