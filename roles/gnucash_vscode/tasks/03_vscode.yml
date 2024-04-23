@@ -57,9 +57,9 @@
 #   register: python3_pip_list
 #   changed_when: false
 
-# - name: Install virtualenv package
-#   ansible.builtin.pip:
-#     name: virtualenv
+- name: Install virtualenv package
+  ansible.builtin.pip:
+    name: virtualenv
 
 # - name: Install python packages for vscode
 #   ansible.builtin.pip:
