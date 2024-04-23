@@ -2,5 +2,5 @@
 - name: Run gnucash_vscode role on local hosts
   hosts: local
   tasks:
-    - import_role:
+    - ansible.builtin.import_role:
         name: gnucash_vscode
