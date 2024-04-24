@@ -64,4 +64,4 @@
 - name: Install python packages for vscode
   ansible.builtin.pip:
     name: "{{ vscode_python_packages }}"
-    virtualenv: gnucash
+    virtualenv: ../gnucash
